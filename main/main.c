@@ -12,9 +12,6 @@
 
 #define LV_TICK_PERIOD_MS 1
 
-#define SENS_H	2*24
-#define SENS_V  2*32
-
 SemaphoreHandle_t xGuiSemaphore;
 
 TaskHandle_t gui_task_Handle;

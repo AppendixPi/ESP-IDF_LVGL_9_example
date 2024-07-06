@@ -22,15 +22,6 @@ TaskHandle_t gui_task_Handle;
 lv_obj_t * slider1;// = lv_slider_create(lv_screen_active());
 lv_obj_t * arc;
 
-/*Graphical objects*/
-lv_img_dsc_t my_png;
-static lv_obj_t * label_ta;
-static lv_obj_t * label_tmax;
-static lv_obj_t * label_tmin;
-static lv_obj_t * label_bat;
-lv_obj_t * bar;
-/*Buffer for IR image*/
-uint8_t *img_ir;
 
 static void lv_tick_task(void *arg) {
     (void) arg;

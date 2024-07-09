@@ -16,7 +16,7 @@ SemaphoreHandle_t xGuiSemaphore;
 
 TaskHandle_t gui_task_Handle;
 
-lv_obj_t * slider1;// = lv_slider_create(lv_screen_active());
+lv_obj_t * slider1;
 lv_obj_t * arc;
 
 
@@ -94,8 +94,8 @@ static void gui_task(void *arg){
 
 
     while(1){
-    	vTaskDelay(10);
-    	if (pdTRUE == xSemaphoreTake(xGuiSemaphore, 50)) {
+    	vTaskDelay(10 / portTICK_PERIOD_MS);
+    	if (pdTRUE == xSemaphoreTake(xGuiSemaphore, 50 / portTICK_PERIOD_MS)) {
     		lv_task_handler();
     		xSemaphoreGive(xGuiSemaphore);
     	}
@@ -113,11 +113,11 @@ void app_main(void)
     st7789_init();
 
     xTaskCreatePinnedToCore(gui_task, "gui", 18*1024, NULL, 5, &gui_task_Handle,1 );
-    vTaskDelay(1000);
+    vTaskDelay(1000 / portTICK_PERIOD_MS);
 	
     int slide_val = 0;
     while (1) {
-    	if (pdTRUE == xSemaphoreTake(xGuiSemaphore, 50)) {
+    	if (pdTRUE == xSemaphoreTake(xGuiSemaphore, 50 / portTICK_PERIOD_MS)) {	/*Take semaphore to update slider and arc values*/
     		lv_slider_set_value(slider1, slide_val, LV_ANIM_ON);
     		lv_arc_set_value(arc, slide_val);
     		xSemaphoreGive(xGuiSemaphore);
@@ -126,6 +126,6 @@ void app_main(void)
     	if(slide_val > 100){
     		slide_val = 0;
     	}
-    	vTaskDelay(10);
+    	vTaskDelay(10 / portTICK_PERIOD_MS);
     }
 }
